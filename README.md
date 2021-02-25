@@ -1,4 +1,4 @@
-#Creeper Confetti Forge Edition  
+# Creeper Confetti Forge Edition  
 A Minecraft modification for replacing creeper explosions with harmless confetti.  
   
 More information as well as downloads available on the [Curse Forge Page](http://sr2610.com/mods/confetti.html).
