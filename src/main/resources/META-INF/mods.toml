@@ -1,0 +1,14 @@
+modLoader="javafml"
+loaderVersion="[34,)"
+license="Creative Commons Attribution-NonCommercial 3.0 Unported"
+issueTrackerURL="https://github.com/SR2610/MicroMods/issues"
+logoFile="creeperconfetti.png"
+[[mods]]
+modId="creeperconfetti"
+version="${file.jarVersion}"
+displayName="Creeper Confetti"
+updateJSONURL="https://raw.githubusercontent.com/SR2610/MicroMods/master/creeperconfettiupdate.json"
+displayURL="https://minecraft.curseforge.com/projects/creeper-confetti"
+credits="Thanks to RoCoKo and Neonit for their contributions for translations and fixing an oversight respectively."
+authors="SR2610"
+description='''A mod that replaces the standard Creeper explosion with harmless confetti.  Has config options to re-enable damage to world and players.'''
