@@ -36,7 +36,7 @@ public class ConfettiHandler {
 			creeper = (CreeperEntity) event.getEntityLiving();
 		else
 			return;
-		if (creeper != null && creeper.getCreeperState() == 1) {
+		if (creeper != null && creeper.getSwellDir()>0) {
 			int ignitedTime = ObfuscationReflectionHelper.getPrivateValue(CreeperEntity.class, creeper,
 					"field_70833_d");
 
@@ -47,9 +47,9 @@ public class ConfettiHandler {
 						damagePlayers(creeper);
 					Random rand = new Random();
 					if (rand.nextInt(100) < 5)
-						creeper.world.playSound(creeper.getPosX(), creeper.getPosY(), creeper.getPosZ(), ModSounds.confetti, SoundCategory.HOSTILE,2F,1F, false);
-					creeper.world.playSound(creeper.getPosX(), creeper.getPosY(), creeper.getPosZ(),SoundEvents.ENTITY_FIREWORK_ROCKET_TWINKLE, SoundCategory.HOSTILE, 1F,1F, false);
-					if(creeper.world.isRemote)
+						creeper.level.playLocalSound(creeper.position().x, creeper.position().y, creeper.position().z, ModSounds.confetti, SoundCategory.HOSTILE,2F,1F, false);
+					creeper.level.playLocalSound(creeper.position().x, creeper.position().y, creeper.position().z,SoundEvents.FIREWORK_ROCKET_TWINKLE, SoundCategory.HOSTILE, 1F,1F, false);
+					if(creeper.level.isClientSide)
 					spawnParticles(creeper);
 					creeper.remove(); // Removes the creeper from the world, as if it was dead
 				} else {
@@ -67,9 +67,9 @@ public class ConfettiHandler {
 	}
 
 	private boolean willExplodeToConfetti(CreeperEntity creeper) {
-		Random rand = new Random(creeper.getUniqueID().getMostSignificantBits() & Long.MAX_VALUE);
+		Random rand = new Random(creeper.getUUID().getMostSignificantBits() & Long.MAX_VALUE);
 		int randomNum = rand.nextInt(100);
-		System.out.println(creeper.world.isRemote + " is " + randomNum + "is " + (creeper.getUniqueID().getMostSignificantBits() & Long.MAX_VALUE));
+		//System.out.println(creeper.world.isRemote + " is " + randomNum + "is " + (creeper.getUUID().getMostSignificantBits() & Long.MAX_VALUE));
 		if (!(randomNum < ConfigHandler.GENERAL.ConfettiChance.get())
 				|| ConfigHandler.GENERAL.ConfettiChance.get() == 0)
 			return false;
@@ -79,23 +79,23 @@ public class ConfettiHandler {
 
 	private void damagePlayers(CreeperEntity creeper) {
 
-		if (!creeper.world.isRemote) {
+		if (!creeper.level.isClientSide) {
 			Explosion.Mode explosion$mode = Explosion.Mode.NONE;
-			float f = creeper.isCharged() ? 2.0F : 1.0F;
-			Explosion explosion = new Explosion(creeper.world, creeper, null, null, creeper.getPosX(), creeper.getPosY(), creeper.getPosZ(), 3 * f, false, explosion$mode);
-			explosion.doExplosionA();
+			float f = creeper.isPowered() ? 2.0F : 1.0F;
+			Explosion explosion = new Explosion(creeper.level, creeper, null, null, creeper.position().x, creeper.position().y, creeper.position().z, 3 * f, false, explosion$mode);
+			explosion.explode();
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	private void spawnParticles(CreeperEntity creeper) {
-		Minecraft.getInstance().particles
-				.addEffect(new FireworkParticle.Starter((ClientWorld)creeper.getEntityWorld(), creeper.getPosX(), creeper.getPosY() + 0.5F,
-						creeper.getPosZ(), 0, 0, 0, Minecraft.getInstance().particles, generateTag(creeper, false)));
-		if (creeper.isCharged())
-			Minecraft.getInstance().particles
-					.addEffect(new FireworkParticle.Starter((ClientWorld)creeper.getEntityWorld(), creeper.getPosX(), creeper.getPosY() + 2.5F,
-							creeper.getPosZ(), 0, 0, 0, Minecraft.getInstance().particles, generateTag(creeper, true)));
+		Minecraft.getInstance().particleEngine
+				.add(new FireworkParticle.Starter((ClientWorld)creeper.level, creeper.position().x, creeper.position().y + 0.5F,
+						creeper.position().z, 0, 0, 0, Minecraft.getInstance().particleEngine, generateTag(creeper, false)));
+		if (creeper.isPowered())
+			Minecraft.getInstance().particleEngine
+					.add(new FireworkParticle.Starter((ClientWorld)creeper.level, creeper.position().x, creeper.position().y + 2.5F,
+							creeper.position().z, 0, 0, 0, Minecraft.getInstance().particleEngine, generateTag(creeper, true)));
 	}
 
 	private CompoundNBT generateTag(CreeperEntity creeper, boolean powered) {
