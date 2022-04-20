@@ -26,7 +26,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class ConfettiHandler {
-	private Method explode;
 
 	@SubscribeEvent
 	public void creeperExplodeEvent(LivingEvent.LivingUpdateEvent event) {
@@ -52,12 +51,11 @@ public class ConfettiHandler {
 					if(!creeper.level.isClientSide)
 					creeper.remove(Entity.RemovalReason.KILLED); // Removes the creeper from the world, as if it was dead
 				} else {
-					explode = ObfuscationReflectionHelper.findMethod(Creeper.class, "m_32315_");
+					Method explode = ObfuscationReflectionHelper.findMethod(Creeper.class, "m_32315_");
 					try {
 						explode.invoke(creeper, (Object[]) null);
 					} catch (IllegalAccessException e) { // Should handle this better but oh well
-					} catch (IllegalArgumentException e) {
-					} catch (InvocationTargetException e) {
+					} catch (IllegalArgumentException | InvocationTargetException ignored) {
 					}
 				}
 			}
@@ -69,11 +67,8 @@ public class ConfettiHandler {
 		Random rand = new Random(creeper.getUUID().getMostSignificantBits() & Long.MAX_VALUE);
 		int randomNum = rand.nextInt(100);
 		//System.out.println(creeper.world.isRemote + " is " + randomNum + "is " + (creeper.getUUID().getMostSignificantBits() & Long.MAX_VALUE));
-		if (!(randomNum < ConfigHandler.GENERAL.ConfettiChance.get())
-				|| ConfigHandler.GENERAL.ConfettiChance.get() == 0)
-			return false;
-		else
-			return true;
+		return randomNum < ConfigHandler.GENERAL.ConfettiChance.get()
+				&& ConfigHandler.GENERAL.ConfettiChance.get() != 0;
 	}
 
 	private void damagePlayers(Creeper creeper) {
