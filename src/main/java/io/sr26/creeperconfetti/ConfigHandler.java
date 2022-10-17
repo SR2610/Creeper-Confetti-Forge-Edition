@@ -1,4 +1,4 @@
-package com.sr2610.creeperconfetti;
+package io.sr26.creeperconfetti;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 

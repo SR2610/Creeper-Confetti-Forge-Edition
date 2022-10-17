@@ -1,4 +1,4 @@
-package com.sr2610.creeperconfetti;
+package io.sr26.creeperconfetti;
 
 import java.io.Console;
 import java.lang.reflect.InvocationTargetException;
@@ -27,11 +27,13 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class ConfettiHandler {
 
+
 	@SubscribeEvent
-	public void creeperExplodeEvent(LivingEvent.LivingUpdateEvent event) {
+	public void creeperExplodeEvent(LivingEvent.LivingTickEvent event) {
 		Creeper creeper = null;
-		if (event.getEntityLiving() instanceof Creeper)
-			creeper = (Creeper) event.getEntityLiving();
+		if (event.getEntity() instanceof Creeper) {
+			creeper = (Creeper) event.getEntity();
+		}
 		else
 			return;
 		if (creeper != null && creeper.getSwellDir()>0) {
@@ -43,13 +45,13 @@ public class ConfettiHandler {
 					if (ConfigHandler.GENERAL.DamagePlayers.get())
 						damagePlayers(creeper);
 					Random rand = new Random();
-					if (rand.nextInt(100) < 5)
-						creeper.level.playLocalSound(creeper.position().x, creeper.position().y, creeper.position().z, ModSounds.confetti, SoundSource.HOSTILE,2F,1F, false);
+				//	if (rand.nextInt(100) < 5)
+					//	creeper.level.playLocalSound(creeper.position().x, creeper.position().y, creeper.position().z, ModSounds.confetti, SoundSource.HOSTILE,2F,1F, false);
 					creeper.level.playLocalSound(creeper.position().x, creeper.position().y, creeper.position().z, SoundEvents.FIREWORK_ROCKET_TWINKLE, SoundSource.HOSTILE, 1F,1F, false);
 					if(creeper.level.isClientSide)
-					spawnParticles(creeper);
+						spawnParticles(creeper);
 					if(!creeper.level.isClientSide)
-					creeper.remove(Entity.RemovalReason.KILLED); // Removes the creeper from the world, as if it was dead
+						creeper.remove(Entity.RemovalReason.KILLED); // Removes the creeper from the world, as if it was dead
 				} else {
 					Method explode = ObfuscationReflectionHelper.findMethod(Creeper.class, "m_32315_");
 					try {
@@ -62,6 +64,8 @@ public class ConfettiHandler {
 
 		}
 	}
+
+
 
 	private boolean willExplodeToConfetti(Creeper creeper) {
 		Random rand = new Random(creeper.getUUID().getMostSignificantBits() & Long.MAX_VALUE);
