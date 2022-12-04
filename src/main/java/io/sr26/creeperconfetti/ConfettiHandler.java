@@ -45,8 +45,8 @@ public class ConfettiHandler {
 					if (ConfigHandler.GENERAL.DamagePlayers.get())
 						damagePlayers(creeper);
 					Random rand = new Random();
-				//	if (rand.nextInt(100) < 5)
-					//	creeper.level.playLocalSound(creeper.position().x, creeper.position().y, creeper.position().z, ModSounds.confetti, SoundSource.HOSTILE,2F,1F, false);
+					if (rand.nextInt(100) < ConfigHandler.GENERAL.CheerChance.get())
+						creeper.level.playLocalSound(creeper.position().x, creeper.position().y, creeper.position().z, ModSounds.confetti, SoundSource.HOSTILE,2F,1F, false);
 					creeper.level.playLocalSound(creeper.position().x, creeper.position().y, creeper.position().z, SoundEvents.FIREWORK_ROCKET_TWINKLE, SoundSource.HOSTILE, 1F,1F, false);
 					if(creeper.level.isClientSide)
 						spawnParticles(creeper);
@@ -70,7 +70,6 @@ public class ConfettiHandler {
 	private boolean willExplodeToConfetti(Creeper creeper) {
 		Random rand = new Random(creeper.getUUID().getMostSignificantBits() & Long.MAX_VALUE);
 		int randomNum = rand.nextInt(100);
-		//System.out.println(creeper.world.isRemote + " is " + randomNum + "is " + (creeper.getUUID().getMostSignificantBits() & Long.MAX_VALUE));
 		return randomNum < ConfigHandler.GENERAL.ConfettiChance.get()
 				&& ConfigHandler.GENERAL.ConfettiChance.get() != 0;
 	}
