@@ -77,7 +77,7 @@ public class ConfettiHandler {
 	private void damagePlayers(Creeper creeper) {
 
 		if (!creeper.level.isClientSide) {
-			Explosion.BlockInteraction explosion$mode = Explosion.BlockInteraction.NONE;
+			Explosion.BlockInteraction explosion$mode = Explosion.BlockInteraction.KEEP;
 			float f = creeper.isPowered() ? 2.0F : 1.0F;
 			Explosion explosion = new Explosion(creeper.level, creeper, null, null, creeper.position().x, creeper.position().y, creeper.position().z, 3 * f, false, explosion$mode);
 			explosion.explode();

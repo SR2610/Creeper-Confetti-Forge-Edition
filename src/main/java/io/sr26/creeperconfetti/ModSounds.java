@@ -15,7 +15,7 @@ public class ModSounds {
 	@SubscribeEvent
 	public static void registerSound(RegisterEvent e) {
 		final ResourceLocation loc = new ResourceLocation("creeperconfetti","confetti");
-		confetti = new SoundEvent(loc);
+		confetti = SoundEvent.createVariableRangeEvent(loc);
 		e.register(ForgeRegistries.Keys.SOUND_EVENTS, registry -> {
 			registry.register("confetti", confetti);
 		});
