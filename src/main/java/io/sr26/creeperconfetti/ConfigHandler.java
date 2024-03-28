@@ -1,18 +1,19 @@
 package io.sr26.creeperconfetti;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ConfigHandler {
-    private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+    private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
     public static final General GENERAL = new General(BUILDER);
-    public static final ForgeConfigSpec spec = BUILDER.build();
+    public static final ModConfigSpec spec = BUILDER.build();
 
     public static class General {
-        public final ForgeConfigSpec.ConfigValue<Boolean> DamagePlayers;
-        public final ForgeConfigSpec.ConfigValue<Integer> ConfettiChance;
-        public final ForgeConfigSpec.ConfigValue<Integer> CheerChance;
+        public final ModConfigSpec.ConfigValue<Boolean> DamagePlayers;
+        public final ModConfigSpec.ConfigValue<Integer> ConfettiChance;
+        public final ModConfigSpec.ConfigValue<Integer> CheerChance;
 
-        public General(ForgeConfigSpec.Builder builder) {
+        public General(ModConfigSpec.Builder builder) {
             builder.push("General");
             DamagePlayers = builder
                     .comment("Confetti Explosions Damage Players [false/true|default:false]")

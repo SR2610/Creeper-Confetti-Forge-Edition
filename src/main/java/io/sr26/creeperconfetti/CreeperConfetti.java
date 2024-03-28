@@ -1,15 +1,23 @@
 package io.sr26.creeperconfetti;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.NeoForge;
 
-@Mod("creeperconfetti")
+@Mod(CreeperConfetti.MOD_ID)
 public class CreeperConfetti
 {
-	public CreeperConfetti() {
-	ModLoadingContext.get().registerConfig(net.minecraftforge.fml.config.ModConfig.Type.COMMON, io.sr26.creeperconfetti.ConfigHandler.spec);
-		MinecraftForge.EVENT_BUS.register(new ConfettiHandler());
+
+	public static final String MOD_ID = "creeperconfetti";
+
+	public CreeperConfetti(IEventBus eventBus) {
+	ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, io.sr26.creeperconfetti.ConfigHandler.spec);
+		NeoForge.EVENT_BUS.register(new ConfettiHandler());
+
+		ModSounds.SOUND_REGISTER.register(eventBus);
+
 	}
 
 }
