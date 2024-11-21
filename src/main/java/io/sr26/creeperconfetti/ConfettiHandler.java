@@ -40,17 +40,17 @@ public class ConfettiHandler {
 			int ignitedTime = ObfuscationReflectionHelper.getPrivateValue(Creeper.class, creeper,
 					"f_32270_");
 			int fuseTime = ObfuscationReflectionHelper.getPrivateValue(Creeper.class, creeper, "f_32271_");
-			if (ignitedTime >= fuseTime - (creeper.level.isClientSide?2:1)){
+			if (ignitedTime >= fuseTime - (creeper.level().isClientSide?2:1)){
 				if (willExplodeToConfetti(creeper)) {
 					if (ConfigHandler.GENERAL.DamagePlayers.get())
 						damagePlayers(creeper);
 					Random rand = new Random();
 					if (rand.nextInt(100) < ConfigHandler.GENERAL.CheerChance.get())
-						creeper.level.playLocalSound(creeper.position().x, creeper.position().y, creeper.position().z, ModSounds.confetti, SoundSource.HOSTILE,2F,1F, false);
-					creeper.level.playLocalSound(creeper.position().x, creeper.position().y, creeper.position().z, SoundEvents.FIREWORK_ROCKET_TWINKLE, SoundSource.HOSTILE, 1F,1F, false);
-					if(creeper.level.isClientSide)
+						creeper.level().playLocalSound(creeper.position().x, creeper.position().y, creeper.position().z, ModSounds.confetti, SoundSource.HOSTILE,2F,1F, false);
+					creeper.level().playLocalSound(creeper.position().x, creeper.position().y, creeper.position().z, SoundEvents.FIREWORK_ROCKET_TWINKLE, SoundSource.HOSTILE, 1F,1F, false);
+					if(creeper.level().isClientSide)
 						spawnParticles(creeper);
-					if(!creeper.level.isClientSide)
+					if(!creeper.level().isClientSide)
 						creeper.remove(Entity.RemovalReason.KILLED); // Removes the creeper from the world, as if it was dead
 				} else {
 					Method explode = ObfuscationReflectionHelper.findMethod(Creeper.class, "m_32315_");
@@ -76,10 +76,10 @@ public class ConfettiHandler {
 
 	private void damagePlayers(Creeper creeper) {
 
-		if (!creeper.level.isClientSide) {
+		if (!creeper.level().isClientSide) {
 			Explosion.BlockInteraction explosion$mode = Explosion.BlockInteraction.KEEP;
 			float f = creeper.isPowered() ? 2.0F : 1.0F;
-			Explosion explosion = new Explosion(creeper.level, creeper, null, null, creeper.position().x, creeper.position().y, creeper.position().z, 3 * f, false, explosion$mode);
+			Explosion explosion = new Explosion(creeper.level(), creeper, null, null, creeper.position().x, creeper.position().y, creeper.position().z, 3 * f, false, explosion$mode);
 			explosion.explode();
 		}
 	}
@@ -87,11 +87,11 @@ public class ConfettiHandler {
 	@OnlyIn(Dist.CLIENT)
 	private void spawnParticles(Creeper creeper) {
 		Minecraft.getInstance().particleEngine
-				.add(new FireworkParticles.Starter((ClientLevel)creeper.level, creeper.position().x, creeper.position().y + 0.5F,
+				.add(new FireworkParticles.Starter((ClientLevel)creeper.level(), creeper.position().x, creeper.position().y + 0.5F,
 						creeper.position().z, 0, 0, 0, Minecraft.getInstance().particleEngine, generateTag(creeper, false)));
 		if (creeper.isPowered())
 			Minecraft.getInstance().particleEngine
-					.add(new FireworkParticles.Starter((ClientLevel)creeper.level, creeper.position().x, creeper.position().y + 2.5F,
+					.add(new FireworkParticles.Starter((ClientLevel)creeper.level(), creeper.position().x, creeper.position().y + 2.5F,
 							creeper.position().z, 0, 0, 0, Minecraft.getInstance().particleEngine, generateTag(creeper, true)));
 	}
 
