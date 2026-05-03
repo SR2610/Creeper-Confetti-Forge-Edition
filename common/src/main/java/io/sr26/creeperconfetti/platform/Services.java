@@ -5,6 +5,7 @@ import io.sr26.creeperconfetti.platform.services.IClientHelper;
 import io.sr26.creeperconfetti.platform.services.IConfig;
 import io.sr26.creeperconfetti.platform.services.IPlatformHelper;
 import io.sr26.creeperconfetti.platform.services.IRegistryHelper;
+import io.sr26.creeperconfetti.platform.services.INetworkHelper;
 
 import java.util.ServiceLoader;
 
@@ -19,7 +20,15 @@ public class Services {
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
     public static final IConfig CONFIG = load(IConfig.class);
     public static final IRegistryHelper REGISTRY = load(IRegistryHelper.class);
-    public static final IClientHelper CLIENT = load(IClientHelper.class);
+    public static final INetworkHelper NETWORK = load(INetworkHelper.class);
+    private static IClientHelper CLIENT;
+
+    public static IClientHelper getClientHelper() {
+        if (CLIENT == null) {
+            CLIENT = load(IClientHelper.class);
+        }
+        return CLIENT;
+    }
 
     // This code is used to load a service for the current environment. Your implementation of the service must be defined
     // manually by including a text file in META-INF/services named with the fully qualified class name of the service.

@@ -26,6 +26,14 @@ loom {
             ideConfigGenerated(true)
             runDir('runs/server')
         }
+        gametest {
+            server()
+            setConfigName('Fabric GameTest')
+            ideConfigGenerated(true)
+            runDir('runs/gametest')
+            vmArg('-Dfabric-api.gametest=1')
+            vmArg('-Dfabric-api.gametest.report-file=runs/gametest/gametest-results.xml')
+        }
     }
 }
 
@@ -45,5 +53,13 @@ sourceSets.configureEach {
                 attribute(loaderAttribute, 'fabric')
             }
         }
+    }
+}
+
+task printMethods {
+    doLast {
+        def urlClassLoader = new URLClassLoader(configurations.compileClasspath.files.collect { it.toURI().toURL() } as URL[], null)
+        def clazz = Class.forName("net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry", true, urlClassLoader)
+        clazz.methods.each { println it.name }
     }
 }

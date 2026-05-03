@@ -31,10 +31,10 @@ public class ConfettiHandler {
             }
             creeper.level().playSound(null, creeper.getX(), creeper.getY(), creeper.getZ(), SoundEvents.FIREWORK_ROCKET_TWINKLE, SoundSource.HOSTILE, 1.0F, 1.0F);
 
-            creeper.level().broadcastEntityEvent(creeper, (byte) 110);
+            Services.NETWORK.sendConfettiExplosion(creeper);
             creeper.remove(Entity.RemovalReason.KILLED);
         } else {
-            Services.CLIENT.spawnConfettiParticles(creeper);
+            Services.getClientHelper().spawnConfettiParticles(creeper);
         }
     }
 

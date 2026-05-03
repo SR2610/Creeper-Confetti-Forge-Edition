@@ -1,0 +1,41 @@
+name: GameTest
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Make Gradle Wrapper Executable
+        run: chmod +x gradlew
+
+      - name: Run NeoForge GameTests
+        run: ./gradlew :neoforge:runGameTestServer
+
+      - name: Run Fabric GameTests
+        run: ./gradlew :fabric:runGametest
+
+      - name: Upload Test Reports (Fabric)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gametest-reports-fabric
+          path: fabric/runs/gametest/gametest-results.xml
+          if-no-files-found: ignore

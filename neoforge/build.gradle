@@ -31,6 +31,11 @@ neoForge {
             this.file("runs/server").createParentDirectories()
             gameDirectory = this.mkdir(this.file("runs/server"))
         }
+        gameTestServer {
+            type = "gameTestServer"
+            systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
+            gameDirectory = this.mkdir(this.file("runs/gametest"))
+        }
     }
     mods {
         "${mod_id}" {

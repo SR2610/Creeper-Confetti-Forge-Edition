@@ -48,10 +48,32 @@
     {
       "type": "java",
       "request": "launch",
-      "name": "NeoForge Server (:neoforge)",
+      "name": "NeoForge GameTestServer (:neoforge)",
       "presentation": {
         "group": "Mod Development - neoforge",
         "order": 2
+      },
+      "projectName": "neoforge",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@C:\\Users\\Stephen\\Workspace\\Projects\\2026\\Creeper-Confetti-Forge-Edition\\neoforge\\build\\moddev\\gameTestServerRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@C:\\Users\\Stephen\\Workspace\\Projects\\2026\\Creeper-Confetti-Forge-Edition\\neoforge\\build\\moddev\\gameTestServerRunVmArgs.txt",
+        "-Dfml.modFolders\u003dcreeperconfetti%%C:\\Users\\Stephen\\Workspace\\Projects\\2026\\Creeper-Confetti-Forge-Edition\\neoforge\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\neoforge\\runs\\gametest",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "NeoForge Server (:neoforge)",
+      "presentation": {
+        "group": "Mod Development - neoforge",
+        "order": 3
       },
       "projectName": "neoforge",
       "mainClass": "net.neoforged.devlaunch.Main",

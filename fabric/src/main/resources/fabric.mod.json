@@ -17,6 +17,9 @@
     "entrypoints": {
         "main": [
             "io.sr26.creeperconfetti.CreeperConfetti"
+        ],
+        "client": [
+            "io.sr26.creeperconfetti.CreeperConfettiClient"
         ]
     },
     "mixins": [

@@ -17,8 +17,19 @@ public class FabricConfig implements IConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private ConfigData data = new ConfigData();
 
+    private static FabricConfig INSTANCE;
+
     public FabricConfig() {
+        INSTANCE = this;
         load();
+    }
+
+    public static void setSyncedValues(int confettiChance, boolean damagePlayers) {
+        if (INSTANCE != null) {
+            INSTANCE.data.confettiChance = confettiChance;
+            INSTANCE.data.damagePlayers = damagePlayers;
+            Constants.LOG.info("Synced config from server: confettiChance=" + confettiChance + ", damagePlayers=" + damagePlayers);
+        }
     }
 
     private void load() {

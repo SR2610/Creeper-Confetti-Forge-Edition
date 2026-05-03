@@ -1,32 +1,44 @@
-# MultiLoader Template
+# Creeper Confetti
 
-This project provides a Gradle project template that can compile Minecraft mods for multiple modloaders using a common project for the sources. This project does not require any third party libraries or dependencies. If you have any questions or want to discuss the project, please join our [Discord](https://discord.myceliummod.network).
+A modern Minecraft mod that replaces destructive creeper explosions with a colorful burst of confetti, customizable sounds, and complete safety for your builds!
 
-## Getting Started
+Available for both **NeoForge** and **Fabric** via a unified MultiLoader workspace.
 
-### IntelliJ IDEA
-This guide will show how to import the MultiLoader Template into IntelliJ IDEA. The setup process is roughly equivalent to setting up the modloaders independently and should be very familiar to anyone who has worked with their MDKs.
+## Features
 
-1. Clone or download this repository to your computer.
-2. Configure the project by setting the properties in the `gradle.properties` file. You will also need to change the `rootProject.name`  property in `settings.gradle`, this should match the folder name of your project, or else IDEA may complain.
-3. Open the template's root folder as a new project in IDEA. This is the folder that contains this README.md file and the gradlew executable.
-4. If your default JVM/JDK is not Java 25 you will encounter an error when opening the project. This error is fixed by going to `File > Settings > Build, Execution, Deployment > Build Tools > Gradle > Gradle JVM` and changing the value to a valid Java 25 JVM. You will also need to set the Project SDK to Java 25. This can be done by going to `File > Project Structure > Project SDK`. Once both have been set open the Gradle tab in IDEA and click the refresh button to reload the project.
-5. Open your Run/Debug Configurations. Under the `Application` category there should now be options to run Fabric and NeoForge projects. Select one of the client options and try to run it.
-6. Assuming you were able to run the game in step 5 your workspace should now be set up.
+- **Block Safety**: Blocks are preserved perfectly instead of being destroyed by creeper explosions.
+- **Visual Burst**: Creeper explosions create a spectacular confetti effect when they explode.
+- **Customizable Damage**: Control whether confetti explosions still damage players.
+- **Dynamic Server-to-Client Syncing**: Server-defined settings for `confettiChance` and `damagePlayers` automatically synchronize down to connecting clients.
 
-### Eclipse
-While it is possible to use this template in Eclipse it is not recommended. During the development of this template multiple critical bugs and quirks related to Eclipse were found at nearly every level of the required build tools. While we continue to work with these tools to report and resolve issues support for projects like these are not there yet. For now Eclipse is considered unsupported by this project. The development cycle for build tools is notoriously slow so there are no ETAs available.
+## Configuration
 
-## Development Guide
-When using this template the majority of your mod should be developed in the `common` project. The `common` project is compiled against the vanilla game and is used to hold code that is shared between the different loader-specific versions of your mod. The `common` project has no knowledge or access to ModLoader specific code, apis, or concepts. Code that requires something from a specific loader must be done through the project that is specific to that loader, such as the `fabric` or `neoforge` projects.
+The mod provides the following options in its configuration file:
 
-Loader specific projects such as the `fabric` and `neoforge` project are used to load the `common` project into the game. These projects also define code that is specific to that loader. Loader specific projects can access all the code in the `common` project. It is important to remember that the `common` project can not access code from loader specific projects.
+- `confettiChance` (0 - 100): The percentage chance a creeper will explode into confetti. Default: `100`.
+- `cheerChance` (0 - 100): The percentage chance a confetti explosion will also trigger a cheer sound. Default: `5`.
+- `damagePlayers` (true / false): If true, confetti explosions still damage players/entities. Default: `false`.
 
-## Removing Platforms and Loaders
-While this template has support for many modloaders, new loaders may appear in the future, and existing loaders may become less relevant.
+## Project Structure
 
-Removing loader specific projects is as easy as deleting the folder, and removing the `include("projectname")` line from the `settings.gradle` file.
-For example if you wanted to remove support for `forge` you would follow the following steps:
+This project uses a MultiLoader Gradle setup:
 
-1. Delete the subproject folder. For example, delete `MultiLoader-Template/forge`.
-2. Remove the project from `settings.gradle`. For example, remove `include("forge")`. 
+- `common`: The core source code compiled against the vanilla game, including shared logic for handling creeper explosions.
+- `fabric`: Loader-specific registration, entrypoints, and server-to-client config syncing for Fabric.
+- `neoforge`: Loader-specific registration and configuration for NeoForge.
+
+## Developing & Building
+
+### Prerequisites
+
+- Java 25 or higher
+
+### Building the Mod
+
+To build the project for both platforms, use the following Gradle command:
+
+```bash
+./gradlew build
+```
+
+The output jars for both NeoForge and Fabric will be generated under their respective `build/libs` directories.
