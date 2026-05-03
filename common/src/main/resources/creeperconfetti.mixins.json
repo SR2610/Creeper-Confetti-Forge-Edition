@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.sr26.creeperconfetti.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "CreeperMixin",
+    "LivingEntityMixin",
+    "CreeperAccessor"
+  ],
+  "client": [],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
+
